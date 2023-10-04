@@ -71,17 +71,19 @@ class _HomePageState extends State<HomePage> {
                     }
 
                     return GridView.builder(
-                        shrinkWrap: true,
+                        itemCount: productList.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
-                          mainAxisSpacing: 20,
+                          mainAxisSpacing: 30,
                           crossAxisSpacing: 30,),
                         itemBuilder: (context,index){
                           return GridTile(
-                              header: Container(
-                                decoration: BoxDecoration(color: Colors.deepPurple, borderRadius: BorderRadius.circular(8)),
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(productList[index].title.toString(), style: const TextStyle(color: Colors.white),)),
+                              header: Card(
+                                child: Container(
+                                  decoration: BoxDecoration(color: Colors.deepPurple, borderRadius: BorderRadius.circular(8)),
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(productList[index].title.toString(), style: const TextStyle(color: Colors.white),)),
+                              ),
                             footer: Container(
                                 decoration: BoxDecoration(color: Colors.deepPurple, borderRadius: BorderRadius.circular(8)),
                                 padding: const EdgeInsets.all(8),
