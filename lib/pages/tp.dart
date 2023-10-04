@@ -1,128 +1,127 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/drawer.dart';
-
 void main() {
-  runApp(ABC());
+  runApp(const LoginApp());
 }
 
-class Product {
-  final String name;
-  final String imageUrl;
-
-  Product({required this.name, required this.imageUrl});
-}
-
-class ABC extends StatelessWidget {
-  final List<Product> products = [
-    Product(name: "Product 1", imageUrl: "https://example.com/product1.jpg"),
-    Product(name: "Product 2", imageUrl: "https://example.com/product2.jpg"),
-    Product(name: "Product 3", imageUrl: "https://example.com/product3.jpg"),
-    Product(name: "Product 1", imageUrl: "https://example.com/product1.jpg"),
-    Product(name: "Product 2", imageUrl: "https://example.com/product2.jpg"),
-    Product(name: "Product 3", imageUrl: "https://example.com/product3.jpg"),
-    Product(name: "Product 1", imageUrl: "https://example.com/product1.jpg"),
-    Product(name: "Product 2", imageUrl: "https://example.com/product2.jpg"),
-    Product(name: "Product 3", imageUrl: "https://example.com/product3.jpg"),
-    Product(name: "Product 1", imageUrl: "https://example.com/product1.jpg"),
-    Product(name: "Product 2", imageUrl: "https://example.com/product2.jpg"),
-    Product(name: "Product 3", imageUrl: "https://example.com/product3.jpg"),
-    // Add more products as needed.
-  ];
-
-  ABC({super.key});
+class LoginApp extends StatelessWidget {
+  const LoginApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo and organization name
-              Text('MyShop', style: TextStyle(fontSize: 20)),
-            ],
+      home: LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 500.0,
+              minHeight: 600.0,
+            ),
+            child: const LoginForm(),
           ),
-          actions: [
-            // Search bar
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // Implement search functionality here
-              },
+        ),
+      ),
+    );
+  }
+}
+
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email address.';
+    }
+    // You can add more complex email validation here if needed.
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password.';
+    }
+    // You can add more complex password validation here if needed.
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Container(
+        width: 500,
+        height: 600,
+        color: Colors.yellowAccent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const Text(
+              'Welcome!',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-            // Heart icon (Wishlist)
-            IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {
-                // Implement wishlist functionality here
-              },
+            const SizedBox(height: 20.0),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+              validator: _validateEmail,
             ),
-            // Cart icon
-            IconButton(
-              icon: const Icon(Icons.shopping_cart),
+            const SizedBox(height: 16.0),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+              validator: _validatePassword,
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
               onPressed: () {
-                // Implement cart functionality here
+                if (_formKey.currentState!.validate()) {
+                  // Form is valid, perform login here.
+                }
               },
+              child: const Text('Login'),
+            ),
+            const SizedBox(height: 12.0),
+            TextButton(
+              onPressed: () {
+                // Implement password reset functionality here
+              },
+              child: const Text('Forgot Password?'),
             ),
           ],
-        ),
-        drawer: const MyDrawer(),
-
-        body: Center(
-          child: Container(
-            width: 1300,
-            height: 1000,
-            decoration: BoxDecoration(
-              color: Colors.red,
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 1000,
-                  child: ListView.builder(
-
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                          width: 300,
-                          height: 400,// Adjust the width as needed
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children:[
-                              Image.network(
-                                products[index].imageUrl,
-                                width: 100, // Adjust the image width as needed
-                                height: 100, // Adjust the image height as needed
-                              ),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                products[index].name,
-                                style: const TextStyle(fontSize: 16.0),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

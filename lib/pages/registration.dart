@@ -41,147 +41,183 @@ class _RegistrationPageState extends State<RegistrationPage> {
             fit: BoxFit.cover,
           ),
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 400,
-        ),
-        child: Container(
-          padding: hpadding,
-          child: Center(
+        child: Center(
+          child: SizedBox(
+            width: 500.0,
+            height: 600.0,
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(40.0),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        TextFormField(
-                          controller: _agencyNameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Username *',
-                            border: OutlineInputBorder(),
+                child: Scrollbar(
+                  trackVisibility : false,
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          const Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Center(child: Text("Registration", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,),)),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Username Name is required';
-                            }
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            labelText: 'Email ID *',
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Email ID is required';
-                            } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
-                              return 'Enter a valid email address';
-                            }
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _mobileController,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.phone,
-                          decoration: const InputDecoration(
-                            labelText: 'Mobile No *',
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Mobile No is required';
-                            } else if (value?.length != 10) {
-                              return 'Mobile No must be exactly 10 digits';
-                            }
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: !_showPassword,
-                          decoration: InputDecoration(
-                            labelText: 'Password *',
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
-                              onPressed: () {
-                                setState(() {
-                                  _showPassword = !_showPassword;
-                                });
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Password is required';
-                              }else if (value!.length < 8) {
-                                return 'Password is too short (min 8 characters)';
-                              } else if (value!.length > 16) {
-                                return 'Password is too long (max 16 characters)';
-                              } else if (!_passwordPattern.hasMatch(value)) {
-                                return 'Password must contain at least one number, one special character, one lowercase, and one uppercase letter';
-                              }
-
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: _confirmPasswordController,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  labelText: 'Confirm Password *',
-                                  border: const OutlineInputBorder(),
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.info_outline),
-                                    onPressed: () {
-                                      _showPasswordRequirements(context);
-                                    },
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Confirm Password is required';
-                                  } else if (value != _passwordController.text) {
-                                    return 'Passwords do not match';
-                                  }
-                                  return null;
-                                },
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                          TextFormField(
+                            controller: _agencyNameController,
+                            decoration: InputDecoration(
+                              hintText: "   Enter Username",
+                              labelText: '   Username *',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: const BorderSide(color: Color(0xFF7F265B)),
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // Registration logic here
-                              // If validation passes, perform the registration
-                              // You can add code here to save the registration data
-                            }
-                          },
-                          child: const Text('Register'),
-                        ),
-                      ],
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Username Name is required';
+                              }
+                              return null;
+                            },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              hintText: "   Enter Email",
+                              labelText: '   Email ID *',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: const BorderSide(color: Color(0xFF7F265B)),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Email ID is required';
+                              } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                                return 'Enter a valid email address';
+                              }
+                              return null;
+                            },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _mobileController,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              hintText: "   Enter Mobile no",
+                              labelText: '   Mobile No *',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: const BorderSide(color: Color(0xFF7F265B)),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Mobile No is required';
+                              } else if (value?.length != 10) {
+                                return 'Mobile No must be exactly 10 digits';
+                              }
+                              return null;
+                            },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_showPassword,
+                            decoration: InputDecoration(
+                              hintText: "   Enter Password",
+                              labelText: '   Password *',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: const BorderSide(color: Color(0xFF7F265B)),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Password is required';
+                                }else if (value!.length < 8) {
+                                  return 'Password is too short (min 8 characters)';
+                                } else if (value!.length > 16) {
+                                  return 'Password is too long (max 16 characters)';
+                                } else if (!_passwordPattern.hasMatch(value)) {
+                                  return 'Password must contain at least one number, one special character, one lowercase, and one uppercase letter';
+                                }
+
+                              return null;
+                            },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _confirmPasswordController,
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                    labelText: '   Confirm Password *',
+                                    hintText: "   Enter Confirm Password",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      borderSide: const BorderSide(color: Color(0xFF7F265B)),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.info_outline),
+                                      onPressed: () {
+                                        _showPasswordRequirements(context);
+                                      },
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Confirm Password is required';
+                                    } else if (value != _passwordController.text) {
+                                      return 'Passwords do not match';
+                                    }
+                                    return null;
+                                  },
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: InkWell(
+                              onTap:(){
+                                if (_formKey.currentState!.validate()) {
+                                  // Registration logic here
+                                  // If validation passes, perform the registration
+                                  // You can add code here to save the registration data
+                                }
+                              },
+                              child: Container(
+                                width: 200.0,
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF7F265B), // Set the background color
+                                  borderRadius: BorderRadius.circular(40.0), // Apply rounded corners
+                                ),
+
+                                child:const Center(child: Text("Login",style: TextStyle(fontSize: 18.00, color: Colors.white),)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
