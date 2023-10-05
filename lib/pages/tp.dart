@@ -69,61 +69,40 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Container(
-        width: 500,
-        height: 600,
-        color: Colors.yellowAccent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const Text(
-              'Welcome!',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20.0),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-              validator: _validateEmail,
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              validator: _validatePassword,
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // Form is valid, perform login here.
-                }
-              },
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 12.0),
-            TextButton(
-              onPressed: () {
-                // Implement password reset functionality here
-              },
-              child: const Text('Forgot Password?'),
-            ),
-          ],
+    return GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      mainAxisSpacing: 30,
+      crossAxisSpacing: 30,
+    ), itemBuilder: (BuildContext context, int index) {
+      return TextFormField(
+        controller: _passwordController,
+        decoration: InputDecoration(
+          hintText: "   Enter Password",
+          labelText: '   Password *',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide:
+            const BorderSide(color: Color(0xFF7F265B)),
+          ),
         ),
-      ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Password is required';
+          } else if (value!.length < 8) {
+            return 'Password is too short (min 8 characters)';
+          } else if (value!.length > 16) {
+            return 'Password is too long (max 16 characters)';
+          } else {
+            return 'Password must contain at least one number, one special character, one lowercase, and one uppercase letter';
+          }
+
+          return null;
+        },
+        autovalidateMode:
+        AutovalidateMode.onUserInteraction,
+      );
+    },
     );
   }
 }
+
