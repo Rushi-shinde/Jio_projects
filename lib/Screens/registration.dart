@@ -1,6 +1,10 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:jio_project/DatabaseHandler/DatabaseHelper.dart';
+
+import '../models/SignupModel.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -17,12 +21,13 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _mobileController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _userNameController = TextEditingController(text: 'rushi');
+  final TextEditingController _emailController = TextEditingController(text: 'Shinde@gmail.com');
+  final TextEditingController _mobileController = TextEditingController(text: '9326064627');
+  final TextEditingController _genderController = TextEditingController(text: 'Male');
+  final TextEditingController _passwordController = TextEditingController(text: 'Shinde@123');
+  final TextEditingController _confirmPasswordController = TextEditingController(text: 'Shinde@123');
+
 
   bool _showPassword = false;
 
@@ -74,7 +79,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           if(w !>=600)
                           Row(
 
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            //mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Flexible(
                                 child: TextFormField(
@@ -125,7 +130,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           if(w !<=600)
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              //mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   child: TextFormField(
@@ -215,9 +220,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               const SizedBox(width: 20),
                               Flexible(
                                 child: TextFormField(
-
+                                  controller: _genderController,
                                   decoration: InputDecoration(
-
                                     hintText: "   Enter Gender",
                                     labelText: '   Gender *',
                                     border: OutlineInputBorder(
@@ -346,12 +350,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   decoration: InputDecoration(
                                     labelText: '   Confirm Password *',
                                     hintText: "   Enter Confirm Password",
-                                    // contentPadding: const EdgeInsets.symmetric(
-                                    //   vertical:
-                                    //   10.0, // Adjust the vertical padding
-                                    //   horizontal:
-                                    //   10.0, // Adjust the horizontal padding
-                                    // ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                       borderSide: const BorderSide(
@@ -431,12 +429,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     decoration: InputDecoration(
                                       labelText: '   Confirm Password *',
                                       hintText: "   Enter Confirm Password",
-                                      // contentPadding: const EdgeInsets.symmetric(
-                                      //   vertical:
-                                      //   10.0, // Adjust the vertical padding
-                                      //   horizontal:
-                                      //   10.0, // Adjust the horizontal padding
-                                      // ),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(30.0),
                                         borderSide: const BorderSide(
@@ -458,8 +450,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       }
                                       return null;
                                     },
-                                    autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                   ),
                                 ),
                               ],
@@ -470,12 +461,39 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             child: InkWell(
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
-
+                                  final newUser = User(
+                                    username: _userNameController.text,
+                                    email: _emailController.text,
+                                    mobile: _mobileController.text,
+                                    gender: _mobileController.text,
+                                    password: _passwordController.text,
+                                  );
+                                  DatabaseHelper().insertUser(newUser).then((userId) {
+                                    print(userId);
+                                      if (userId != null && userId > 0) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Registration successful!'),
+                                          ),
+                                        );
+                                        Navigator.pushNamed(context, '/login');
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Registration failed. Please try again.'),
+                                          ),
+                                        );
+                                      }
+                                  }).catchError((error) {
+                                    Text('Error during registration: $error');
+                                  });
                                 }
                               },
                               child: Container(
                                 width: 300.0,
-                                height: 40.0,
+                                height: 50.0,
                                 decoration: BoxDecoration(
                                   color: const Color(
                                       0xFF7F265B),
@@ -492,15 +510,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 7,
+                            height: 10,
                           ),
-                          InkWell(
-                            onTap:(){
-                            },
-                            child: const Text(
-                              'Forgot Password?',
-                              style: TextStyle(fontSize: 18.0,color: Color(0xFF7F265B)),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("Already have an account?",style: TextStyle(fontSize: 18.0,color: Color(0xFF7F265B)), ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              InkWell(
+                                onTap:(){
+                                  setState(() {
+                                    Navigator.pushNamed(context, "/login");
+                                  });
+                                },
+                                child: const Text(
+                                  'Login',
+                                  style: TextStyle(fontSize: 18.0,color: Color(0xFF7F265B)),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
