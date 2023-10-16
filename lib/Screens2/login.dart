@@ -1,4 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../models/TpModel.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -11,6 +16,37 @@ class LoginPage2 extends StatefulWidget {
 
   @override
   _LoginPage2State createState() => _LoginPage2State();
+}
+void register(String username, String password) async {
+  const String apiUrl = 'https://dummyjson.com/auth/login';
+
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        'username': username,
+        'password': password,
+      },
+    );
+
+    if (kDebugMode) {
+      print(response);
+    }
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      if (kDebugMode) {
+        print('Login Successful: $responseData');
+      }
+    } else {
+      if (kDebugMode) {
+        print('Login Error: ${response.statusCode}');
+      }
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Network Error: $e');
+    }
+  }
 }
 
 class _LoginPage2State extends State<LoginPage2> {
@@ -129,8 +165,10 @@ class _LoginPage2State extends State<LoginPage2> {
                             const SizedBox(height: 30),
                             Center(
                               child: InkWell(
-                                onTap: () {
-
+                                onTap: (){
+                                  setState(() {
+                                    register(_userNameController.text.toString(),_passwordController.text.toString());
+                                  });
                                 },
                                 child: Container(
                                   width: 300.0,

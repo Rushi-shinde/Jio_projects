@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jio_project/Screens/registration.dart';
 
-import '../DatabaseHandler/DatabaseHelper.dart';
-
 void main() {
   runApp(const MaterialApp(
     home: LoginPage(),
@@ -133,32 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                             Center(
                               child: InkWell(
                                 onTap: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    final username = _userNameController.text;
-                                    final password = _passwordController.text;
 
-                                    DatabaseHelper().getUser(username).then((user) {
-                                      if (user != null && user.password == password) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Login successful!'),
-                                          ),
-                                        );
-
-                                        Navigator.pushNamed(context, '/home');
-                                      } else {
-                                        // Login failed
-                                        // You can display an error message
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Login failed. Please check your username and password.'),
-                                          ),
-                                        );
-                                      }
-                                    }).catchError((error) {
-                                      Text('Error during login: $error');
-                                    });
-                                  }
                                 },
                                 child: Container(
                                   width: 300.0,

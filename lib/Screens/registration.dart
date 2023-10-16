@@ -2,7 +2,6 @@ import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jio_project/DatabaseHandler/DatabaseHelper.dart';
 
 import '../models/SignupModel.dart';
 
@@ -460,36 +459,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           Center(
                             child: InkWell(
                               onTap: () {
-                                if (_formKey.currentState!.validate()) {
-                                  final newUser = User(
-                                    username: _userNameController.text,
-                                    email: _emailController.text,
-                                    mobile: _mobileController.text,
-                                    gender: _mobileController.text,
-                                    password: _passwordController.text,
-                                  );
-                                  DatabaseHelper().insertUser(newUser).then((userId) {
-                                    print(userId);
-                                      if (userId != null && userId > 0) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Registration successful!'),
-                                          ),
-                                        );
-                                        Navigator.pushNamed(context, '/login');
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Registration failed. Please try again.'),
-                                          ),
-                                        );
-                                      }
-                                  }).catchError((error) {
-                                    Text('Error during registration: $error');
-                                  });
-                                }
+
                               },
                               child: Container(
                                 width: 300.0,

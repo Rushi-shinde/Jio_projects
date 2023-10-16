@@ -4,11 +4,8 @@ import 'package:jio_project/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:jio_project/utils/routes.dart';
 
-import 'Screens/login.dart';
-import 'Screens/registration.dart';
-
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,11 +20,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: const LoginPage2(),
       routes: {
         MyRoutes.homeRoute: (context) => const HomePage(),
-        MyRoutes.registrationRoute: (context) => const RegistrationPage(),
-        MyRoutes.loginRoute: (context) => const LoginPage(),
+        MyRoutes.registrationRoute: (context) => const RegistrationPage2(),
+        MyRoutes.loginRoute: (context) => const LoginPage2(),
       },
     );
   }
