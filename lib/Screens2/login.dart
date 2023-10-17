@@ -1,25 +1,50 @@
+import 'dart:js';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/TpModel.dart';
+import '../pages/home.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     home: LoginPage2(),
   ));
 }
 
 class LoginPage2 extends StatefulWidget {
-  const LoginPage2({super.key});
+  LoginPage2({super.key});
+  bool abc=false;
 
   @override
+
   _LoginPage2State createState() => _LoginPage2State();
 }
-void register(String username, String password) async {
-  const String apiUrl = 'https://dummyjson.com/auth/login';
 
+
+Future<void> saveToken(String token) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('token', token);
+}
+
+Future<String> getToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('token') ?? '';
+}
+
+Future<void> logoutUser() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('token');
+}
+void myFunction(BuildContext context) {
+  Navigator.pushReplacementNamed(context, '/home');
+}
+
+login(String username, String password, BuildContext context) async {
+
+  const String apiUrl = 'https://dummyjson.com/auth/login';
   try {
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -32,27 +57,37 @@ void register(String username, String password) async {
     if (kDebugMode) {
       print(response);
     }
+
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      if (kDebugMode) {
-        print('Login Successful: $responseData');
-      }
-    } else {
-      if (kDebugMode) {
-        print('Login Error: ${response.statusCode}');
-      }
+      final data = jsonDecode(response.body);
+      final token = data['token'];
+      await saveToken(token);
+
+        if (kDebugMode) {
+          print('Login Successful: $data');
+          print(response.statusCode);
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+
+      } else {
+        if (kDebugMode) {
+          print(response.statusCode);
+          print('Login Error: ${response.statusCode}');
+        }
+
     }
   } catch (e) {
-    if (kDebugMode) {
-      print('Network Error: $e');
-    }
+
+        if (kDebugMode) {
+          print('Network Error: $e');
+        }
   }
 }
 
 class _LoginPage2State extends State<LoginPage2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController(text: 'kminchelle');
+  final TextEditingController _passwordController = TextEditingController(text: '0lelplR');
 
   bool _showPassword = false;
 
@@ -167,7 +202,7 @@ class _LoginPage2State extends State<LoginPage2> {
                               child: InkWell(
                                 onTap: (){
                                   setState(() {
-                                    register(_userNameController.text.toString(),_passwordController.text.toString());
+                                    login(_userNameController.text.toString(),_passwordController.text.toString(),context);
                                   });
                                 },
                                 child: Container(

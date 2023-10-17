@@ -20,11 +20,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage2(),
+      home: LoginPage2(),
       routes: {
         MyRoutes.homeRoute: (context) => const HomePage(),
         MyRoutes.registrationRoute: (context) => const RegistrationPage2(),
-        MyRoutes.loginRoute: (context) => const LoginPage2(),
+        MyRoutes.loginRoute: (context) => LoginPage2(),
       },
     );
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jio_project/widgets/drawer.dart';
 import 'package:http/http.dart' as http;
+import '../Screens2/login.dart';
 import '../models/ProductModel.dart';
 
 
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+
         title: const Center(
           child: Text("My App", style: TextStyle(
             fontSize: 20.0,
@@ -46,6 +48,15 @@ class _HomePageState extends State<HomePage> {
           ),
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout), // You can use any Icon you prefer
+            onPressed: () async {
+              await logoutUser(); // Clear the session
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+          ),
+        ],
         backgroundColor: Colors.blue,
       ),
       body: Center(
@@ -53,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(30.0),
           child: SizedBox(
             height: 1000.00,
-            child: FutureBuilder(
+             child: FutureBuilder(
                 future: getProductApi(),
                 builder: (context , snapshot){
                   if (!snapshot.hasData) {
